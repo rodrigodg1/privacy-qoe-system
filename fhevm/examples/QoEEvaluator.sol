@@ -18,7 +18,7 @@ contract QoEEvaluator {
     }
 
     QoEData[] private dataEntries;
-    euint32 private totalMOS; // New variable to store the sum of MOS values
+    euint32 private totalMOS; // Variable to store the sum of MOS values
 
     function addData(
         EncryptedInput memory qosType,
@@ -38,7 +38,10 @@ contract QoEEvaluator {
         }));
 
         // Update the total MOS
-        //totalMOS = TFHE.add(totalMOS, TFHE.asEuint32(mosValue));
+        totalMOS = TFHE.add(totalMOS, TFHE.asEuint32(mosValue));
+        
+        // Allow the contract to operate on the encrypted totalMOS
+        TFHE.allow(totalMOS, address(this));
     }
 
     function getDataCount() public view returns (uint256) {
@@ -52,5 +55,12 @@ contract QoEEvaluator {
 
     function getTotalMOS() public view returns (euint32) {
         return totalMOS;
+    }
+
+    // New function to add external value to totalMOS
+    function addToTotalMOS(einput valueInput, bytes calldata inputProof) public {
+        euint32 value = TFHE.asEuint32(valueInput, inputProof);
+        totalMOS = TFHE.add(totalMOS, value);
+        TFHE.allow(totalMOS, address(this));
     }
 }

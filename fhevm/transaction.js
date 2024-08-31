@@ -44,7 +44,7 @@ async function main() {
 
     privateKey = privateKey_Zama_Dev;
 
-    const contractAddress = "0x3e5d0097127bb71bba06bc28006e90d93a95a83d";
+    const contractAddress = "0xef5812e9898abfbd1f66970cf90291b75f001eaa";
 
 
     const userAddress = "0x3b31fC0b4B81184078AFB1835810A6C732Fcd9E1";
@@ -193,7 +193,7 @@ async function main() {
                     console.log(`Estimated gas: ${gasEstimate}, Actual gas used: ${gasUsed}`);
 
                     // Wait for 2 seconds before processing the next data entry
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    //await new Promise(resolve => setTimeout(resolve, 2000));
 
                 } catch (error) {
                     console.error(`Error adding data entry ${i + 1}:`, error);
