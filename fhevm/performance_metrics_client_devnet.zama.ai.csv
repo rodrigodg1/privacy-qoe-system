@@ -1,0 +1,3 @@
+provider,Row Number,Encryption Time (ms),Encrypted Data Size (KB),Transaction Size (KB),CPU Usage (%),Memory Usage (MB),Transaction Confirmation Time (s),Transaction Hash,Estimated Gas,Actual Gas Used
+https://devnet.zama.ai,1,37,156.20,44.22,46.67,5.38,5.07,0xb95b772426dc017433cede226cfd09f3616c887c6b9f3e72ee186d77d5205585,816406,816406
+https://devnet.zama.ai,2,46,156.36,44.22,48.48,-0.04,6.96,0xf96d12d644f6e33cb7d024f3889554ff6612d758dff2b8e5d0a4f60877e9efdd,799273,799273
