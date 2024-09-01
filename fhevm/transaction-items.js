@@ -44,7 +44,7 @@ async function main() {
 
     privateKey = privateKey_Zama_Dev;
 
-    const contractAddress = "0xef5812e9898abfbd1f66970cf90291b75f001eaa";
+    const contractAddress = "0xf78e04c489d4a8d82726b7c79b2fc3c94da2ceb1";
 
 
     const userAddress = "0x3b31fC0b4B81184078AFB1835810A6C732Fcd9E1";
@@ -53,7 +53,7 @@ async function main() {
     web3.eth.accounts.wallet.add(account);
     web3.eth.defaultAccount = account.address;
 
-    const contractJson = JSON.parse(fs.readFileSync("./artifacts/examples/QoEEvaluator.sol/QoEEvaluator.json", "utf8"));
+    const contractJson = JSON.parse(fs.readFileSync("./artifacts/examples/QoEEvaluatorITEMS.sol/QoEEvaluator.json", "utf8"));
     const abi = contractJson.abi;
     const contract = new web3.eth.Contract(abi, contractAddress);
 
@@ -62,7 +62,7 @@ async function main() {
     
 
     const csvWriter = createCsvWriter({
-        path: `performance_metrics_client_${provider_csv}.csv`,
+        path: `performance_ITEMS_metrics_client_${provider_csv}.csv`,
         header: [
             { id: "provider", title: "provider" },
             { id: "rowNumber", title: "Row Number" },

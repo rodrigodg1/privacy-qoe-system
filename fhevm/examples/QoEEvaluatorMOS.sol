@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import "../lib/TFHE.sol";
 
-contract QoEEvaluator {
+contract QoEEvaluatorMOS {
     struct QoEData {
         euint8 qosType;
         euint8 qodModel;
