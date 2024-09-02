@@ -31,20 +31,21 @@ function getCpuUsage() {
 
 async function main() {
     //const web3 = new Web3.default('http://localhost:8545');
-    //const provider = "http://localhost:8545";
-    //const provider_csv = "localhost";
-    const provider = "https://devnet.zama.ai";
-    const provider_csv = "devnet.zama.ai";
+    const provider = "http://localhost:8545";
+    const provider_csv = "localhost";
+    //const provider = "https://devnet.zama.ai";
+    //const provider_csv = "devnet.zama.ai";
     
 
     const web3 = new Web3.default(provider);
 
     const privateKey_Zama_Dev = '0x3611d97e4794cd95dead683db1698b5b9d171f0c0ad4cbac2f8d88cc9ee591a5';
-    const privateKey_local = '0x3611d97e4794cd95dead683db1698b5b9d171f0c0ad4cbac2f8d88cc9ee591a5';
+    const privateKey_local = '0x8355bb293b8714a06b972bfe692d1bd9f24235c1f4007ae0be285d398b0bba2f';
 
-    privateKey = privateKey_Zama_Dev;
+    privateKey = privateKey_local;
 
-    const contractAddress = "0xf78e04c489d4a8d82726b7c79b2fc3c94da2ceb1";
+    //const contractAddress = "0xf78e04c489d4a8d82726b7c79b2fc3c94da2ceb1";
+    const contractAddress = "0x74c085a069fafd4f264b5200847edb1ade82b3c0";
 
 
     const userAddress = "0x3b31fC0b4B81184078AFB1835810A6C732Fcd9E1";
@@ -53,11 +54,12 @@ async function main() {
     web3.eth.accounts.wallet.add(account);
     web3.eth.defaultAccount = account.address;
 
-    const contractJson = JSON.parse(fs.readFileSync("./artifacts/examples/QoEEvaluatorITEMS.sol/QoEEvaluator.json", "utf8"));
+    const contractJson = JSON.parse(fs.readFileSync("./artifacts/examples/QoEEvaluatorITEMS.sol/QoEEvaluatorITEMS.json", "utf8"));
     const abi = contractJson.abi;
     const contract = new web3.eth.Contract(abi, contractAddress);
 
-    const instance = await fhevm.createInstance({ networkUrl: "https://devnet.zama.ai" });
+    //const instance = await fhevm.createInstance({ networkUrl: "https://devnet.zama.ai" });
+    const instance = await fhevm.createInstance({ networkUrl: provider });
 
     
 
@@ -69,7 +71,7 @@ async function main() {
             { id: "encryptionTime", title: "Encryption Time (ms)" },
             { id: "encryptedDataSize", title: "Encrypted Data Size (KB)" },
             { id: "transactionSize", title: "Transaction Size (KB)" },
-            { id: "cpuUsage", title: "CPU Usage (%)" },
+            { id: "cpuUsage", title: "CPU Usage (ms)" },
             { id: "memoryUsage", title: "Memory Usage (MB)" },
             { id: "transactionConfirmationTime", title: "Transaction Confirmation Time (s)" },
             { id: "transactionHash", title: "Transaction Hash" },
@@ -88,7 +90,9 @@ async function main() {
                 console.log(`Processing row ${i + 1}`);
 
                 const startTime = Date.now();
-                const startCpu = getCpuUsage();
+               //const startCpu = getCpuUsage();
+                const startUsage = process.cpuUsage();
+                //console.log("Start CPU:", startCpu);
                 const startMemUsage = process.memoryUsage().heapUsed;
 
                 const qosType = instance.createEncryptedInput(contractAddress, userAddress);
@@ -128,8 +132,17 @@ async function main() {
                 const memoryUsage = (endMemUsage - startMemUsage) / (1024 * 1024); // Convert to MB
 
                 const encryptionTime = Date.now() - startTime;
-                const endCpu = getCpuUsage();
-                const cpuUsage = 100 * (1 - (endCpu.idle - startCpu.idle) / (endCpu.total - startCpu.total));
+
+                // Get CPU usage after running the code
+                const endUsage = process.cpuUsage(startUsage);
+
+                // Calculate CPU usage in milliseconds
+                const cpuTimeUsed = (endUsage.user + endUsage.system) / 1000;
+
+                console.log(`CPU time used: ${cpuTimeUsed} ms`);
+                //const endCpu = getCpuUsage();
+                //console.log("End CPU:", endCpu);
+                //const cpuUsage = 100 * (1 - (endCpu.idle - startCpu.idle) / (endCpu.total - startCpu.total));
 
 
                 // Calculate the total size of encrypted data
@@ -179,7 +192,7 @@ async function main() {
                             encryptionTime: encryptionTime,
                             encryptedDataSize: encryptedDataSize.toFixed(2),
                             transactionSize: transactionSizeKB.toFixed(2),
-                            cpuUsage: cpuUsage.toFixed(2),
+                            cpuUsage: cpuTimeUsed.toFixed(2),
                             memoryUsage: memoryUsage.toFixed(2),
                             transactionConfirmationTime: transactionConfirmationTime.toFixed(2),
                             transactionHash: receipt.transactionHash,

@@ -1,6 +1,6 @@
 const Web3 = require('web3');
-const web3 = new Web3.default('https://devnet.zama.ai');
-//const web3 = new Web3.default('http://localhost:8545');
+//const web3 = new Web3.default('https://devnet.zama.ai');
+const web3 = new Web3.default('http://localhost:8545');
 const fs = require('fs');
 
 
@@ -10,10 +10,10 @@ web3.eth.net.isListening()
 
 // MetaMask private key (with 0x prefix)
 //check metamask for private key
-const privateKey_Zama_Dev = '0x3611d97e4794cd95dead683db1698b5b9d171f0c0ad4cbac2f8d88cc9ee591a5';
-const privateKey_local = '0x3611d97e4794cd95dead683db1698b5b9d171f0c0ad4cbac2f8d88cc9ee591a5';
+//const privateKey_Zama_Dev = '0x3611d97e4794cd95dead683db1698b5b9d171f0c0ad4cbac2f8d88cc9ee591a5';
+const privateKey_local = '0x8355bb293b8714a06b972bfe692d1bd9f24235c1f4007ae0be285d398b0bba2f';
 
-privateKey = privateKey_Zama_Dev;
+privateKey = privateKey_local;
 
 // Validate the private key
 if (privateKey.length !== 66 || !privateKey.startsWith('0x') || !/^[0-9a-fA-F]+$/.test(privateKey.slice(2))) {
@@ -25,9 +25,8 @@ const account = web3.eth.accounts.privateKeyToAccount(privateKey);
 console.log(`Deploying from account: ${account.address}`);
 
 // Load the contract's ABI and bytecode (Adjust the path to your JSON file)
-//const contractJson = JSON.parse(fs.readFileSync('./artifacts/examples/Rand.sol/Rand.json', 'utf8'));
-const contractJson = JSON.parse(fs.readFileSync('./artifacts/examples/QoEEvaluatorMOS.sol/QoEEvaluatorMOS.json', 'utf8'));
-//const contractJson = JSON.parse(fs.readFileSync("./artifacts/examples/QoEEvaluatorITEMS.sol/QoEEvaluator.json", "utf8"));
+//const contractJson = JSON.parse(fs.readFileSync('./artifacts/examples/QoEEvaluatorMOS.sol/QoEEvaluatorMOS.json', 'utf8'));
+const contractJson = JSON.parse(fs.readFileSync("./artifacts/examples/QoEEvaluatorITEMS.sol/QoEEvaluatorITEMS.json", "utf8"));
 const abi = contractJson.abi;
 const bytecode = contractJson.bytecode;
 
