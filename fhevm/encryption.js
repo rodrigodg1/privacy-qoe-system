@@ -16,10 +16,20 @@ async function encryptValue(instance, contractAddress, userAddress, value) {
 
     const encryptionTime = endTime - startTime;
     const encryptedStr = typeof encrypted === 'string' ? encrypted : JSON.stringify(encrypted);
-    const encryptedSizeBytes = Buffer.byteLength(encryptedStr, 'utf8');
-    const encryptedSizeKB = encryptedSizeBytes / 1024;
+    // const encryptedSizeBytes = Buffer.byteLength(encryptedStr, 'utf8');
+    // const encryptedSizeKB = encryptedSizeBytes / 1024;
+
+    const encryptedBuffer = Buffer.from(Uint8Array.from(Object.values(encrypted)));
+
+    //fs.writeFileSync('/home/garcia/Desktop/privacy-qoe-system/fhevm/bytes.txt', encryptedBuffer);
+
+    const encryptedSizeBytes = encryptedBuffer.length;
+    const encryptedSizeKB = encryptedSizeBytes
+    //const encryptedSizeKB = encryptedSizeBytes / 1024;
+    
 
     return { encrypted: encryptedStr, encryptionTime, encryptedSizeKB };
+    
 }
 
 async function main() {
@@ -57,22 +67,22 @@ async function main() {
                                 
                                 console.log(`Encrypted ${column} value: ${encrypted}`);
                                 console.log(`Encryption time: ${encryptionTime.toFixed(3)} ms`);
-                                console.log(`Encrypted size: ${encryptedSizeKB.toFixed(3)} KB`);
+                                console.log(`Encrypted size: ${encryptedSizeKB} Bytes`);
 
                                 rowResult[column] = value;
                                 rowResult[`${column}_EncryptionTime(ms)`] = encryptionTime.toFixed(3);
-                                rowResult[`${column}_EncryptedSize(KB)`] = encryptedSizeKB.toFixed(3);
+                                rowResult[`${column}_EncryptedSize(Bytes)`] = encryptedSizeKB;
                             } catch (error) {
                                 console.error(`Error encrypting ${column} value:`, value, error.message);
                                 rowResult[column] = 'Error';
                                 rowResult[`${column}_EncryptionTime(ms)`] = 'Error';
-                                rowResult[`${column}_EncryptedSize(KB)`] = 'Error';
+                                rowResult[`${column}_EncryptedSize(Bytes)`] = 'Error';
                             }
                         } else {
                             console.warn(`Skipping invalid value for ${column}:`, row[column]);
                             rowResult[column] = 'Invalid';
                             rowResult[`${column}_EncryptionTime(ms)`] = 'Invalid';
-                            rowResult[`${column}_EncryptedSize(KB)`] = 'Invalid';
+                            rowResult[`${column}_EncryptedSize(Bytes)`] = 'Invalid';
                         }
                     }
 
