@@ -45,7 +45,7 @@ async function main() {
     privateKey = privateKey_local;
 
     //const contractAddress = "0xf78e04c489d4a8d82726b7c79b2fc3c94da2ceb1";
-    const contractAddress = "0x74c085a069fafd4f264b5200847edb1ade82b3c0";
+    const contractAddress = "0x8fdb26641d14a80fccbe87bf455338dd9c539a50";
 
 
     const userAddress = "0x3b31fC0b4B81184078AFB1835810A6C732Fcd9E1";
