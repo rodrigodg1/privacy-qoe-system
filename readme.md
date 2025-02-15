@@ -1,4 +1,4 @@
-# QoE Privacy System Documentation 
+# Decentralized QoE Privacy Architecture 
 
 ## Overview
 This system combines Quality of Experience (QoE) measurements with privacy-preserving blockchain technology using homomorphic encryption via fhEVM (Fully Homomorphic Encryption Virtual Machine).
