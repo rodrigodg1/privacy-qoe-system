@@ -36,5 +36,5 @@ Results are saved in CSV format for analysis.
 
 ## Resources
 - [fhEVM Documentation](https://docs.zama.ai/fhevm)
-- PoQeMoN Dataset Details
-- Privacy Implementation Code
+- [PoQeMoN QoE Dataset Repository](https://github.com/Lamyne/Poqemon-QoE-Dataset)
+
