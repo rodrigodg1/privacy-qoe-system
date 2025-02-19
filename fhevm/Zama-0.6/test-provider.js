@@ -8,6 +8,3 @@ const network = await provider.getNetwork();
 
 console.log("Network Chain ID:", network.chainId);
 console.log("Network Name:", network.name);
-
-
-//
