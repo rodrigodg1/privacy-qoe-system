@@ -42,10 +42,10 @@ async function runPhase(users, category, results, csvData) {
     const row = csvData[i % csvData.length];
     promises.push(
       post('http://localhost:8585/encrypt', {
-        QoS_type: parseInt(row.QoS_type, 10),
-        QoD_model: parseInt(row.QoD_model, 10),
-        QoD_os_version: parseInt(row.QoD_os_version, 10),
-        QoS_operator: parseInt(row.QoS_operator, 10),
+        QoS_type: parseInt(row.QoS_type),
+        QoD_model: parseInt(row.QoD_model),
+        QoD_os_version: parseInt(row.QoD_os_version),
+        QoS_operator: parseInt(row.QoS_operator),
         MOS: parseFloat(row.MOS)
       }).then(res => {
         if (res.data?.encryptionTime !== undefined) {
