@@ -49,7 +49,9 @@ async function runPhase(users, category, results, csvData) {
         MOS: parseFloat(row.MOS)
       }).then(res => {
         if (res.data?.encryptionTime !== undefined) {
-          results[category].push(res.data.encryptionTime);
+          // Convert milliseconds to seconds
+          const timeInSeconds = res.data.encryptionTime / 1000;
+          results[category].push(timeInSeconds);
         }
       }).catch(error => {
         console.error(`Error in ${category} phase:`, error.message);
