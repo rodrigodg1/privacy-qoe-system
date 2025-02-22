@@ -1,0 +1,8 @@
+[package]
+name = "fhe-evaluation"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+csv = "1.2"
+tfhe = { version = "*", features = ["boolean", "shortint", "integer"] }
