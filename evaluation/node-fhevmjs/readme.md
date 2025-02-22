@@ -29,7 +29,7 @@ npm install
 2. **Benchmark scripto**
     In other terminal:
     ```bash
-   node cannon.js
+   node load.js
    ```
 
 
