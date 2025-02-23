@@ -1,4 +1,4 @@
-# Node FHEVMJS Evaluation
+# Local Node FHEVMJS Evaluation
 
 This project uses the FHEVMJS@V0.4.0 node library, along with ethers.js, to interact with a blockchain and perform encrypted calculations on CSV data.
 
