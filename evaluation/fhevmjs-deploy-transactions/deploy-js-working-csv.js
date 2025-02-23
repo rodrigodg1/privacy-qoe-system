@@ -24,7 +24,7 @@ const account = web3.eth.accounts.privateKeyToAccount(privateKey);
 console.log(`Deploying from account: ${account.address}`);
 
 // Load contract ABI and bytecode
-const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/add_QoEEvaluatorITEMS.sol/add_QoEEvaluatorITEMS.json", "utf8"));
+const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/mult_QoEEvaluatorITEMS.sol/mult_QoEEvaluatorITEMS.json", "utf8"));
 const abi = contractJson.abi;
 const bytecode = contractJson.bytecode;
 const Contract = new web3.eth.Contract(abi);
