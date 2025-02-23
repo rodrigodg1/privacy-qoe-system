@@ -24,7 +24,7 @@ const account = web3.eth.accounts.privateKeyToAccount(privateKey);
 console.log(`Deploying from account: ${account.address}`);
 
 // Load contract ABI and bytecode
-const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/sub_QoEEvaluatorITEMS.sol/sub_QoEEvaluatorITEMS.json", "utf8"));
+const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/add_QoEEvaluatorITEMS.sol/add_QoEEvaluatorITEMS.json", "utf8"));
 const abi = contractJson.abi;
 const bytecode = contractJson.bytecode;
 const Contract = new web3.eth.Contract(abi);
@@ -139,11 +139,12 @@ async function performDeployments() {
 
         // Perform 50 deployments
         for (let i = 0; i < 32; i++) {
+            await new Promise(resolve => setTimeout(resolve, 30000));
             console.log(`Starting deployment ${i + 1}...`);
             await deployContract(nonce);
             nonce++; // Increment nonce for the next deployment
             console.log(`Deployment ${i + 1} completed.`);
-            await new Promise(resolve => setTimeout(resolve, 30000));
+            
         }
 
         console.log('All 50 deployments completed successfully.');
