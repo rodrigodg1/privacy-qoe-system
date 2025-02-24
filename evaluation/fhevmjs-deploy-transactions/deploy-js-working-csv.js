@@ -5,7 +5,7 @@ const provider = "https://rpc.ankr.com/eth_sepolia";
 //const provider = "https://sepolia.drpc.org";
 const provider_csv = "sepolia";
 const web3 = new Web3.default(provider);
-const privateKey = '0x875ab559e894777b3b3486b09f91369b4d3a1ab0d5bfebbf12299182940dcf26';
+const privateKey = '';
 
 // Variables to hold estimated values and network fees
 let estimatedGas;
