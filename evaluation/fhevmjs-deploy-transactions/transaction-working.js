@@ -7,7 +7,7 @@ async function main() {
     const web3 = new Web3.default('http://localhost:8545');
 
     // Replace with your private key
-    const privateKey = '0x875ab559e894777b3b3486b09f91369b4d3a1ab0d5bfebbf12299182940dcf26';
+    const privateKey = '';
 
     // Replace with your deployed contract address
     const contractAddress = '0x7f4d0519b471e8ce403ef62485273dbf84da7b18';
