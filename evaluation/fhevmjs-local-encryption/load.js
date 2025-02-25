@@ -28,11 +28,11 @@ async function runTest() {
 
 // Run load phases with CSV data, including a 5-second delay between each phase.
 await runPhase(10, '10', results, csvData);
-await delay(60000);  // 5 seconds delay
+await delay(30000);  // 5 seconds delay
 await runPhase(50, '50', results, csvData);
-await delay(60000);  // 5 seconds delay
+await delay(30000);  // 5 seconds delay
 await runPhase(100, '100', results, csvData);
-await delay(60000);  // 5 seconds delay
+await delay(30000);  // 5 seconds delay
 await runPhase(200, '200', results, csvData);
 
 
