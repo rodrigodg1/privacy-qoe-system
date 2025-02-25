@@ -14,15 +14,28 @@ async function loadCSVData() {
   });
 }
 
+
+// Helper function for delay (milliseconds)
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+
 async function runTest() {
   const results = { '10': [], '50': [], '100': [], '200': [] };
   const csvData = await loadCSVData();
 
-  // Run load phases with CSV data
-  await runPhase(10, '10', results, csvData);
-  await runPhase(50, '50', results, csvData);
-  await runPhase(100, '100', results, csvData);
-  await runPhase(200, '200', results, csvData);
+// Run load phases with CSV data, including a 5-second delay between each phase.
+await runPhase(10, '10', results, csvData);
+await delay(5000);  // 5 seconds delay
+await runPhase(50, '50', results, csvData);
+await delay(5000);  // 5 seconds delay
+await runPhase(100, '100', results, csvData);
+await delay(5000);  // 5 seconds delay
+await runPhase(200, '200', results, csvData);
+
+
 
   // Generate rotated CSV (fixed syntax)
   const csvContent = [
