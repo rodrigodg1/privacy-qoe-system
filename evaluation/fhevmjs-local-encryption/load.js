@@ -15,14 +15,14 @@ async function loadCSVData() {
 }
 
 async function runTest() {
-  const results = { '10': [], '50': [], '100': [], '1000': [] };
+  const results = { '10': [], '50': [], '100': [], '500': [] };
   const csvData = await loadCSVData();
 
   // Run load phases with CSV data
   await runPhase(10, '10', results, csvData);
   await runPhase(50, '50', results, csvData);
   await runPhase(100, '100', results, csvData);
-  await runPhase(1000, '1000', results, csvData);
+  await runPhase(500, '500', results, csvData);
 
   // Generate rotated CSV (fixed syntax)
   const csvContent = [

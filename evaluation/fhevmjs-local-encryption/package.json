@@ -9,14 +9,15 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "fhevmjs": "0.4.0",
-    "ethers": "^6.0.0", 
-    "web3": "",
+    "axios": "",
+    "body-parser": "",
     "csv-parser": "",
     "csv-writer": "",
+    "ethers": "^6.0.0",
+    "fhevmjs": "0.4.0",
     "fs": "",
-    "express": "",
-    "body-parser": "",
-    "axios": ""
+    "web3": "",
+    "express": ""
+
   }
 }
