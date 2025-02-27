@@ -11,6 +11,9 @@ importers:
       '@openzeppelin/contracts':
         specifier: ^5.0.2
         version: 5.2.0
+      csv-writer:
+        specifier: ^1.6.0
+        version: 1.6.0
     devDependencies:
       '@eslint/js':
         specifier: ^9.9.0
@@ -66,6 +69,9 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
+      csv-parser:
+        specifier: ^3.2.0
+        version: 3.2.0
       dotenv:
         specifier: ^16.0.3
         version: 16.4.7
@@ -1274,6 +1280,14 @@ packages:
 
   crypt@0.0.2:
     resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
+
+  csv-parser@3.2.0:
+    resolution: {integrity: sha512-fgKbp+AJbn1h2dcAHKIdKNSSjfp43BZZykXsCjzALjKy80VXQNHPFJ6T9Afwdzoj24aMkq8GwDS7KGcDPpejrA==}
+    engines: {node: '>= 10'}
+    hasBin: true
+
+  csv-writer@1.6.0:
+    resolution: {integrity: sha512-NOx7YDFWEsM/fTRAJjRpPp8t+MKRVvniAg9wQlUKx20MFrPs73WLJhFf5iteqrxNYnsy924K3Iroh3yNHeYd2g==}
 
   death@1.1.0:
     resolution: {integrity: sha512-vsV6S4KVHvTGxbEcij7hkWRv0It+sGGWVOM67dQde/o5Xjnr+KmLjxWJii2uEObIrt1CcM9w0Yaovx+iOlIL+w==}
@@ -4731,6 +4745,10 @@ snapshots:
       which: 2.0.2
 
   crypt@0.0.2: {}
+
+  csv-parser@3.2.0: {}
+
+  csv-writer@1.6.0: {}
 
   death@1.1.0: {}
 

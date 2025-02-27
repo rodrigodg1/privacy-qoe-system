@@ -28,6 +28,7 @@
     "@typescript-eslint/parser": "^8.0.1",
     "chai": "^4.3.7",
     "cross-env": "^7.0.3",
+    "csv-parser": "^3.2.0",
     "dotenv": "^16.0.3",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^8.5.0",
@@ -55,7 +56,7 @@
     "solidity-coverage": "0.8.12",
     "sqlite3": "^5.1.7",
     "ts-generator": "^0.1.1",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typechain": "^8.2.0",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.1",
@@ -93,6 +94,7 @@
     "deploy-sepolia": "hardhat deploy --network sepolia"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.2"
+    "@openzeppelin/contracts": "^5.0.2",
+    "csv-writer": "^1.6.0"
   }
 }

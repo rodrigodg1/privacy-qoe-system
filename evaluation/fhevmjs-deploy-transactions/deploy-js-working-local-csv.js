@@ -1,11 +1,11 @@
 const Web3 = require('web3');
 const fs = require('fs');
 
-const provider = "https://rpc.ankr.com/eth_sepolia";
+const provider = "http://localhost:8545";
 //const provider = "https://sepolia.drpc.org";
-const provider_csv = "sepolia";
+const provider_csv = "localhost";
 const web3 = new Web3.default(provider);
-const privateKey = '0x45e0697217918fd8e33b148083b41cb18d2db1bcf5562fd3a9c8d4dae3da0fe6';
+const privateKey = '';
 
 // Variables to hold estimated values and network fees
 let estimatedGas;
@@ -24,7 +24,7 @@ const account = web3.eth.accounts.privateKeyToAccount(privateKey);
 console.log(`Deploying from account: ${account.address}`);
 
 // Load contract ABI and bytecode
-const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/teste.sol/teste.json", "utf8"));
+const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/add_QoEEvaluatorITEMS.sol/add_QoEEvaluatorITEMS.json", "utf8"));
 const abi = contractJson.abi;
 const bytecode = contractJson.bytecode;
 const Contract = new web3.eth.Contract(abi);
@@ -89,7 +89,7 @@ async function deployContract(nonce) {
         // Build the transaction
         const tx = Contract.deploy({ data: bytecode }).encodeABI();
         const transaction = {
-            chainId: 11155111,
+            chainId: 9000,
             gas: gasEstimate,
             gasPrice: maxFeePerGas,
             nonce: nonce,
@@ -103,15 +103,19 @@ async function deployContract(nonce) {
         console.log(`Contract Address: ${receipt.contractAddress}`);
 
         // Logging actual cost details...
+// Logging actual cost details...
         const actualGasUsed = receipt.gasUsed;
-        const effectiveGasPrice = BigInt(receipt.effectiveGasPrice);
+        const effectiveGasPrice = receipt.effectiveGasPrice 
+        ? BigInt(receipt.effectiveGasPrice) 
+        : (receipt.gasPrice ? BigInt(receipt.gasPrice) : maxFeePerGas);
         const actualCostInWei = BigInt(actualGasUsed) * effectiveGasPrice;
         const actualCostInEther = web3.utils.fromWei(actualCostInWei.toString(), 'ether');
+
 
         // Update CSV with actual gas price details
         const csvHeader = 'Estimated Gas,Estimated Cost (ETH),Contract Address,Actual Gas Used,Actual Cost (ETH),Network,Actual Gas Price (Wei)\n';
         const csvRow = `${gasEstimate},${estimatedCostInEther},${receipt.contractAddress},${actualGasUsed},${actualCostInEther},${provider_csv},${effectiveGasPrice}\n`;
-        const filename = 'deployment_details.csv';
+        const filename = 'deployment_local_details.csv';
         if (!fs.existsSync(filename)) {
             fs.writeFileSync(filename, csvHeader);
         }
@@ -139,12 +143,11 @@ async function performDeployments() {
 
         // Perform 50 deployments
         for (let i = 0; i < 32; i++) {
-            await new Promise(resolve => setTimeout(resolve, 5000));
             console.log(`Starting deployment ${i + 1}...`);
             await deployContract(nonce);
             nonce++; // Increment nonce for the next deployment
             console.log(`Deployment ${i + 1} completed.`);
-            
+            await new Promise(resolve => setTimeout(resolve, 5000));
         }
 
         console.log('All 50 deployments completed successfully.');
