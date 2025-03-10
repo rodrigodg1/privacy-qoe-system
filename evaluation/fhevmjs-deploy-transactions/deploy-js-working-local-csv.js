@@ -5,7 +5,7 @@ const provider = "http://localhost:8545";
 //const provider = "https://sepolia.drpc.org";
 const provider_csv = "localhost";
 const web3 = new Web3.default(provider);
-const privateKey = '';
+const privateKey = '0x45e0697217918fd8e33b148083b41cb18d2db1bcf5562fd3a9c8d4dae3da0fe6';
 
 // Variables to hold estimated values and network fees
 let estimatedGas;
@@ -24,7 +24,7 @@ const account = web3.eth.accounts.privateKeyToAccount(privateKey);
 console.log(`Deploying from account: ${account.address}`);
 
 // Load contract ABI and bytecode
-const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/add_QoEEvaluatorITEMS.sol/add_QoEEvaluatorITEMS.json", "utf8"));
+const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/teste.sol/teste.json", "utf8"));
 const abi = contractJson.abi;
 const bytecode = contractJson.bytecode;
 const Contract = new web3.eth.Contract(abi);

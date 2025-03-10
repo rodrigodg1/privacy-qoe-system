@@ -30,7 +30,7 @@ function getCpuUsage() {
     };
 }
 
-
+const provider = "http://localhost:8545";
 const provider_csv = "local";
 
 const createFhevmInstance = async () => {
@@ -61,7 +61,7 @@ async function main() {
         const web3 = new Web3.default(provider);
 
         //const privateKey_Zama_Dev = '0x3611d97e4794cd95dead683db1698b5b9d171f0c0ad4cbac2f8d88cc9ee591a5';
-        const privateKey= '';
+        const privateKey = '0x45e0697217918fd8e33b148083b41cb18d2db1bcf5562fd3a9c8d4dae3da0fe6';
 
 
         //privateKey = privateKey;
@@ -101,7 +101,7 @@ async function main() {
             .pipe(csv())
             .on("data", (data) => results.push(data))
             .on("end", async () => {
-                for (let i = 0; i < results.length; i++) {
+                for (let i = 0; i < 1; i++) {
                     const row = results[i];
                     console.log(`Processing row ${i + 1}`);
 
