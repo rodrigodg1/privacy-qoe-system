@@ -30,10 +30,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Set the server key for homomorphic operations
     set_server_key(server_keys);
 
-    // Create a CSV writer for encryption times
+    // Create a CSV writer for encryption times and data
     let mut wtr = Writer::from_path("encryption_times.csv")?;
-    // Write header for the encryption times CSV file
-    wtr.write_record(&["row", "encryption_time_ms"])?;
+    // Write header including row, encryption time, and the encrypted data values
+    wtr.write_record(&[
+        "row",
+        "encryption_time_ms",
+        "qos_type",
+        "qod_model",
+        "qod_os_version",
+        "qos_operator",
+        "mos",
+    ])?;
 
     // Process each row
     for (i, row) in results.iter().enumerate() {
@@ -56,10 +64,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Assign values to variables
         let qos_type = columns[0];
-        let qod_model = columns[1];
-        let qod_os_version = columns[2];
-        let qos_operator = columns[3];
-        let mos = columns[4];
+        let qod_model = columns[3];
+        let qod_os_version = columns[6];
+        let qos_operator = columns[9];
+        let mos = columns[12];
 
         println!(
             "QoS Type: {}, QoD Model: {}, QoD OS Version: {}, QoS Operator: {}, MOS: {}",
@@ -82,13 +90,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("Row {} processed successfully.", i + 1);
         println!("Encryption Time All Items: {} ms", encryption_time);
 
-        // Write the encryption time for this row into the CSV file
-        wtr.write_record(&[(i + 1).to_string(), encryption_time.to_string()])?;
+        // Write the row number, encryption time, and the original encrypted data to the CSV file
+        wtr.write_record(&[
+            (i + 1).to_string(),
+            encryption_time.to_string(),
+            qos_type.to_string(),
+            qod_model.to_string(),
+            qod_os_version.to_string(),
+            qos_operator.to_string(),
+            mos.to_string(),
+        ])?;
     }
 
     // Flush the writer to ensure all data is written
     wtr.flush()?;
 
-    println!("All rows processed. Encryption times saved to encryption_times.csv.");
+    println!("All rows processed. Encryption times and data saved to encryption_times.csv.");
     Ok(())
 }
