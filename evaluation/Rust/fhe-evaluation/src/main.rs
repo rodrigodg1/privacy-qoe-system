@@ -1,4 +1,5 @@
 use csv::ReaderBuilder;
+use csv::Writer;
 use std::fs::File;
 use std::time::Instant;
 use tfhe::prelude::*;
@@ -11,7 +12,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Key generation
     let (client_key, server_keys) = generate_keys(config);
 
-    // Open the CSV file
+    // Open the input CSV file
     let file = File::open("pokemon_encoded.csv")?;
     let mut rdr = ReaderBuilder::new().has_headers(false).from_reader(file);
 
@@ -28,6 +29,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Set the server key for homomorphic operations
     set_server_key(server_keys);
+
+    // Create a CSV writer for encryption times
+    let mut wtr = Writer::from_path("encryption_times.csv")?;
+    // Write header for the encryption times CSV file
+    wtr.write_record(&["row", "encryption_time_ms"])?;
 
     // Process each row
     for (i, row) in results.iter().enumerate() {
@@ -64,19 +70,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let start_time = Instant::now();
 
         // Encrypt the fields using the client key
-        let encrypted_qos_type = FheUint8::try_encrypt(qos_type, &client_key)?;
-        let encrypted_qod_model = FheUint8::try_encrypt(qod_model, &client_key)?;
-        let encrypted_qod_os_version = FheUint8::try_encrypt(qod_os_version, &client_key)?;
-        let encrypted_qos_operator = FheUint8::try_encrypt(qos_operator, &client_key)?;
-        let encrypted_mos = FheUint8::try_encrypt(mos, &client_key)?;
+        let _encrypted_qos_type = FheUint8::try_encrypt(qos_type, &client_key)?;
+        let _encrypted_qod_model = FheUint8::try_encrypt(qod_model, &client_key)?;
+        let _encrypted_qod_os_version = FheUint8::try_encrypt(qod_os_version, &client_key)?;
+        let _encrypted_qos_operator = FheUint8::try_encrypt(qos_operator, &client_key)?;
+        let _encrypted_mos = FheUint8::try_encrypt(mos, &client_key)?;
 
-        // Calculate encryption time
+        // Calculate encryption time in milliseconds
         let encryption_time = start_time.elapsed().as_millis();
 
         println!("Row {} processed successfully.", i + 1);
         println!("Encryption Time All Items: {} ms", encryption_time);
+
+        // Write the encryption time for this row into the CSV file
+        wtr.write_record(&[(i + 1).to_string(), encryption_time.to_string()])?;
     }
 
-    println!("All rows processed.");
+    // Flush the writer to ensure all data is written
+    wtr.flush()?;
+
+    println!("All rows processed. Encryption times saved to encryption_times.csv.");
     Ok(())
 }
