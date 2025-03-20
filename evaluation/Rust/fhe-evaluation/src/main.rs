@@ -84,6 +84,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let _encrypted_qos_operator = FheUint8::try_encrypt(qos_operator, &client_key)?;
         let _encrypted_mos = FheUint8::try_encrypt(mos, &client_key)?;
 
+        //println!("Encrypted values: {:?}", _encrypted_qos_type);
+
         // Calculate encryption time in milliseconds
         let encryption_time = start_time.elapsed().as_millis();
 

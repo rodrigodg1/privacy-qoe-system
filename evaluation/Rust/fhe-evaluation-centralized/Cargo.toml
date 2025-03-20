@@ -1,0 +1,10 @@
+[package]
+name = "fhe-evaluation"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+csv = "1.2"
+actix-web = "4"  # or the version you prefer
+serde = { version = "1.0", features = ["derive"] }
+tfhe = { version = "*", features = ["boolean", "shortint", "integer"] }
