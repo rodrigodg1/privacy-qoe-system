@@ -52,6 +52,7 @@ async fn compute(
         "add" => &encrypted_operand1 + &encrypted_operand2,
         "sub" => &encrypted_operand1 - &encrypted_operand2,
         "mul" => &encrypted_operand1 * &encrypted_operand2,
+        "bitAnd" => &encrypted_operand1 & &encrypted_operand2,
         _ => return HttpResponse::BadRequest().body("Unsupported operation"),
     };
 
