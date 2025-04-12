@@ -18,7 +18,7 @@ const provider_csv_label = "sepolia"; // Label for CSV filename
 const privateKey = process.env.PRIVATE_KEY || ''; // IMPORTANT: Use env variable or secure method
 //const contractAddress = "0x57e80b81638fc630ad20d614b30cb54c5f879b62"; // Your updated contract address
 //const contractAddress = "0x2158a12c7bf203cb54c041111fa990d402bd6067"; // Your updated contract address
-const contractAddress = "0xc573701ea03b7f2db93336cefdc1d8bb3bbd9507"; // Your updated contract address
+const contractAddress = "0xa43080adc990f2da5e4738771ce625ff4eaf1bd4"; // Your updated contract address
 
 // Helper function to get CPU usage (keep if needed)
 function getCpuUsage() {
@@ -55,7 +55,7 @@ async function main() {
     let abi;
     try {
         // Adjust the path if your artifacts are elsewhere
-        const contractJsonPath = "./artifacts/contracts/sub_QoEEvaluatorITEMS.sol/Subtracting_QoEEvaluatorITEMS.json";
+        const contractJsonPath = "./artifacts/contracts/add_QoEEvaluatorITEMS.sol/add_QoEEvaluatorITEMS.json";
         const contractJson = JSON.parse(fs.readFileSync(contractJsonPath, "utf8"));
         abi = contractJson.abi;
     } catch (err) {
@@ -142,7 +142,7 @@ async function main() {
 
                 try {
                     // --- Create Transaction Payload (Plaintext) ---
-                    const method = contract.methods.subtractData(
+                    const method = contract.methods.addData(
                         qosTypeValue,
                         qodModelValue,
                         qodOSVersionValue,
