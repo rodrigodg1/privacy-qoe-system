@@ -6,10 +6,6 @@ const os = require('os'); // Keep for CPU/Memory usage monitoring
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 // Removed: const { createInstance } = require("fhevmjs"); - Instance not needed for plaintext sending
 
-// --- FHEVM Instance creation is no longer needed for this script's primary function ---
-// function getEncryptedItemSize(...) - No longer needed
-// function getCpuUsage() { ... } - Keep if monitoring is still desired
-// const createFhevmInstance = async () => { ... }; - No longer needed
 
 // Configuration (Keep these)
 // const provider_url = "http://localhost:8545"; // Example for local
