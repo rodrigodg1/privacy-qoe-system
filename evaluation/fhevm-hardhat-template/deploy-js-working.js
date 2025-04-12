@@ -31,7 +31,7 @@ console.log(`Deploying from account: ${account.address}`);
 
 // Load the contract's ABI and bytecode (Adjust the path to your JSON file)
 //const contractJson = JSON.parse(fs.readFileSync('./artifacts/examples/QoEEvaluatorMOS.sol/QoEEvaluatorMOS.json', 'utf8'));
-const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/add_QoEEvaluatorITEMS.sol/add_QoEEvaluatorITEMS.json", "utf8"));
+const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/sub_QoEEvaluatorITEMS.sol/Subtracting_QoEEvaluatorITEMS.json", "utf8"));
 const abi = contractJson.abi;
 const bytecode = contractJson.bytecode;
 
