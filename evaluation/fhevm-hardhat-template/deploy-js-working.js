@@ -21,7 +21,7 @@ web3.eth.net.isListening()
 
 
 // Validate the private key
-if (privateKey.length !== 66 || !privateKey.startsWith('0x') || !/^[0-9a-fA-F]+$/.test(privateKey.slice(2))) {
+if (privateKey.length !== 66 || !privateKey.startsWith('') || !/^[0-9a-fA-F]+$/.test(privateKey.slice(2))) {
     throw new Error('Invalid Private Key: Ensure it is 64 hex characters with 0x prefix.');
 }
 
@@ -34,6 +34,9 @@ console.log(`Deploying from account: ${account.address}`);
 const contractJson = JSON.parse(fs.readFileSync("./artifacts/contracts/add_QoEEvaluatorITEMS.sol/add_QoEEvaluatorITEMS.json", "utf8"));
 const abi = contractJson.abi;
 const bytecode = contractJson.bytecode;
+
+//evaluation/fhevm-hardhat-template/artifacts/contracts/sub_QoEEvaluatorITEMS.sol
+
 
 // Set up the contract object
 const Contract = new web3.eth.Contract(abi);

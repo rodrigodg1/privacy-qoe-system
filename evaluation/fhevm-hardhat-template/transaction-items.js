@@ -16,7 +16,9 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const provider_url = "https://sepolia.drpc.org"; // Sepolia
 const provider_csv_label = "sepolia"; // Label for CSV filename
 const privateKey = process.env.PRIVATE_KEY || ''; // IMPORTANT: Use env variable or secure method
-const contractAddress = "0x64bd110eba8b914fc51f8dd189e6010ec065b514"; // Your updated contract address
+//const contractAddress = "0x57e80b81638fc630ad20d614b30cb54c5f879b62"; // Your updated contract address
+//const contractAddress = "0x2158a12c7bf203cb54c041111fa990d402bd6067"; // Your updated contract address
+const contractAddress = "0x73cecc763a6f99ed5a3c40098ef121eae7f7059f"; // Your updated contract address
 
 // Helper function to get CPU usage (keep if needed)
 function getCpuUsage() {
@@ -63,23 +65,24 @@ async function main() {
     const contract = new web3.eth.Contract(abi, contractAddress);
 
     // --- CSV Writer Setup ---
-    // Added new column: transactionCostEther
+    const outputFilePath = `performance_ITEMS_metrics_client_PLAINTEXT_${provider_csv_label}_Add.csv`;
+    const fileExists = fs.existsSync(outputFilePath);
+    
     const csvWriter = createCsvWriter({
-        path: `performance_ITEMS_metrics_client_PLAINTEXT_${provider_csv_label}_Add.csv`, // Indicate plaintext in filename
+        path: outputFilePath,
         header: [
             { id: "provider", title: "Provider" },
             { id: "rowNumber", title: "Row Number" },
-            // { id: "encryptionTime", title: "Encryption Time (ms)" }, // Removed
-            // { id: "encryptedDataSize", title: "Encrypted Data Size (KB)" }, // Removed
             { id: "transactionSize", title: "Transaction Size (KB)" },
-            { id: "cpuUsage", title: "Client CPU Time (ms)" }, // Clarified label
-            { id: "memoryUsage", title: "Client Memory Usage (MB)" }, // Clarified label
+            { id: "cpuUsage", title: "Client CPU Time (ms)" },
+            { id: "memoryUsage", title: "Client Memory Usage (MB)" },
             { id: "transactionConfirmationTime", title: "Transaction Confirmation Time (s)" },
             { id: "transactionHash", title: "Transaction Hash" },
             { id: "estimatedGas", title: "Estimated Gas" },
             { id: "actualGasUsed", title: "Actual Gas Used" },
             { id: "transactionCostEther", title: "Transaction Cost (ETH)" },
         ],
+        append: fileExists,
     });
 
     // --- Read CSV and Process Data ---
