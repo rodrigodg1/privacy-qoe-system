@@ -1,15 +1,9 @@
 use actix_web::{web, App, HttpResponse, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
-use tfhe::prelude::*;
 use tfhe::{generate_keys, set_server_key, ConfigBuilder, FheUint8};
-
-/// Application state holding both the client key and the server keys.
-#[derive(Clone)]
-struct AppState {
-    client_key: Arc<tfhe::ClientKey>,  // Adjust if your TFHE library uses a different type.
-    server_keys: Arc<tfhe::ServerKey>,  // Adjust the type as needed.
-}
+use tfhe::prelude::*;
+use tokio::task;
 
 #[derive(Deserialize)]
 struct ComputeRequest {
@@ -23,64 +17,61 @@ struct ComputeResponse {
     result: u8,
 }
 
-/// Handler for the /compute endpoint.
-/// It ensures that the current thread's global state is initialized by setting the server key,
-/// encrypts the operands, performs the requested operation on the encrypted data,
-/// decrypts the result, and returns it as JSON.
+#[derive(Clone)]
+struct AppState {
+    client_key: Arc<tfhe::ClientKey>,
+    server_keys: Arc<tfhe::ServerKey>,
+}
+
 async fn compute(
     req: web::Json<ComputeRequest>,
     data: web::Data<AppState>,
 ) -> impl Responder {
-    // Set the server key in the current thread.
-    set_server_key(data.server_keys.as_ref().clone());
+    let client_key = data.client_key.clone();
+    let server_keys = data.server_keys.clone();
+    let request_data = req.into_inner();
 
-    let client_key = &data.client_key;
+    let result = task::spawn_blocking(move || {
+        set_server_key(server_keys.as_ref().clone());
 
-    // Encrypt the operands.
-    let encrypted_operand1 = match FheUint8::try_encrypt(req.operand1, client_key.as_ref()) {
-        Ok(enc) => enc,
-        Err(_) => return HttpResponse::InternalServerError().body("Encryption failed"),
-    };
+        let encrypted_operand1 = FheUint8::try_encrypt(request_data.operand1, client_key.as_ref())
+            .map_err(|_| "Encryption failed")?;
+        let encrypted_operand2 = FheUint8::try_encrypt(request_data.operand2, client_key.as_ref())
+            .map_err(|_| "Encryption failed")?;
 
-    let encrypted_operand2 = match FheUint8::try_encrypt(req.operand2, client_key.as_ref()) {
-        Ok(enc) => enc,
-        Err(_) => return HttpResponse::InternalServerError().body("Encryption failed"),
-    };
+        let encrypted_result = match request_data.op.as_str() {
+            "add" => &encrypted_operand1 + &encrypted_operand2,
+            "sub" => &encrypted_operand1 - &encrypted_operand2,
+            "mul" => &encrypted_operand1 * &encrypted_operand2,
+            "bitAnd" => &encrypted_operand1 & &encrypted_operand2,
+            _ => return Err("Unsupported operation"),
+        };
 
-    // Perform the requested operation on the encrypted values.
-    let encrypted_result = match req.op.as_str() {
-        "add" => &encrypted_operand1 + &encrypted_operand2,
-        "sub" => &encrypted_operand1 - &encrypted_operand2,
-        "mul" => &encrypted_operand1 * &encrypted_operand2,
-        "bitAnd" => &encrypted_operand1 & &encrypted_operand2,
-        _ => return HttpResponse::BadRequest().body("Unsupported operation"),
-    };
+        Ok(encrypted_result.decrypt(client_key.as_ref()))
+    })
+    .await;
 
-    // Decrypt the result.
-    let result: u8 = encrypted_result.decrypt(client_key.as_ref());
-
-    HttpResponse::Ok().json(ComputeResponse { result })
+    match result {
+        Ok(Ok(value)) => HttpResponse::Ok().json(ComputeResponse { result: value }),
+        Ok(Err(msg)) => HttpResponse::BadRequest().body(msg),
+        Err(_) => HttpResponse::InternalServerError().body("Internal server error"),
+    }
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // Basic configuration for homomorphic integers.
     let config = ConfigBuilder::default().build();
-
-    // Key generation.
     let (client_key, server_keys) = generate_keys(config);
-    // Set the server key in the main thread.
     set_server_key(server_keys.clone());
+
     let client_key = Arc::new(client_key);
     let server_keys = Arc::new(server_keys);
 
-    // Create shared application state.
     let app_state = web::Data::new(AppState {
-        client_key: client_key.clone(),
-        server_keys: server_keys.clone(),
+        client_key,
+        server_keys,
     });
 
-    // Launch the web server with the /compute endpoint.
     HttpServer::new(move || {
         App::new()
             .app_data(app_state.clone())
