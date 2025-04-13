@@ -19,7 +19,7 @@ const createFhevmInstance = async () => {
 };
 
 // CSV logging function
-const csvFile = "performance_metrics.csv";
+const csvFile = "performance_metrics_jmetter.csv";
 function logMetrics(csvLine) {
     // If the CSV file doesn't exist, create it with a header row.
     if (!fs.existsSync(csvFile)) {
