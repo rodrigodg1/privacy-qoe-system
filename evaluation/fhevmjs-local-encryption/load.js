@@ -23,7 +23,8 @@ function delay(ms) {
 
 
 async function runTest() {
-  const results = { '10': [], '50': [], '100': [], '200': [] };
+  //const results = { '10': [], '50': [], '100': [], '200': [] };
+  const results = { '10': [], '50': [], '100': [] }; // Removed '200' for now
   const csvData = await loadCSVData();
 
 // Run load phases with CSV data, including a 5-second delay between each phase.
@@ -32,8 +33,8 @@ await delay(30000);  // 5 seconds delay
 await runPhase(50, '50', results, csvData);
 await delay(30000);  // 5 seconds delay
 await runPhase(100, '100', results, csvData);
-await delay(30000);  // 5 seconds delay
-await runPhase(200, '200', results, csvData);
+// await delay(30000);  // 5 seconds delay
+// await runPhase(200, '200', results, csvData);
 
 
 
@@ -46,8 +47,8 @@ await runPhase(200, '200', results, csvData);
       )
   ].join('\n');
 
-  writeFileSync('results_encryption.csv', csvContent);
-  console.log('CSV created: results_encryption.csv');
+  writeFileSync('results_encryption2.csv', csvContent);
+  console.log('CSV created: results_encryption2.csv');
 }
 
 async function runPhase(users, category, results, csvData) {
